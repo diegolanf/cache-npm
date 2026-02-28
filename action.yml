@@ -2,6 +2,8 @@ name: Caching with npm
 runs:
   using: "composite"
   steps:
+    - uses: actions/checkout@v6
+
     - name: Setup Node 24
       uses: actions/setup-node@v6
       with:
