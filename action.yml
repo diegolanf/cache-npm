@@ -2,25 +2,22 @@ name: Caching with npm
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Setup Node 24
-      uses: actions/setup-node@v6
+      id: setup-node
+      uses: actions/setup-node@v7
       with:
         node-version: "24"
 
     - name: Cache node modules
       id: cache-npm
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       env:
         cache-name: cache-node-modules
       with:
         path: node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ steps.setup-node.outputs.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
     - name: Print Node.js version
       shell: bash
